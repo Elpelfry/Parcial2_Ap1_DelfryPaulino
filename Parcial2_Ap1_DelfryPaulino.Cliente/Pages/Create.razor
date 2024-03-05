@@ -160,10 +160,9 @@
         }
         else
         {
-            if (Detalle.Valor < 0.01f)
+            if (Detalle.Valor > 0.01f)
             {
-                resultado = 0;
-                mensaje = "";
+                
                 vehiculo.Gastos += Detalle.Valor;
                 vehiculo.VehiculosDetalle.Add(Detalle);
                 Detalle = new VehiculosDetalle();
