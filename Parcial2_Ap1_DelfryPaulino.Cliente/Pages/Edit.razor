@@ -167,7 +167,7 @@
         }
         else
         {
-            if(Detalle.Valor > 0.01f)
+            if (Detalle.Valor > 0.01f && Detalle.Valor < 100000)
             {
                 resultado = 0;
                 mensaje = "";
@@ -178,7 +178,7 @@
             else
             {
                 resultado = 3;
-                mensaje = "El valo debe ser minimo 0.01";
+                mensaje = "El valo debe ser minimo 0.01 y maximo 100000";
             }
         }
     }
