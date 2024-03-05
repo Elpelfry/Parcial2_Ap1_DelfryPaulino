@@ -63,8 +63,6 @@ namespace Parcial2_Ap1_DelfryPaulino.API.Controllers
             {
                 return BadRequest();
             }
-
-
            
             await _context.VehiculosDetalle.Where(d => d.VehiculoId == id ).ExecuteDeleteAsync();
             foreach (var item in vehiculos.VehiculosDetalle)

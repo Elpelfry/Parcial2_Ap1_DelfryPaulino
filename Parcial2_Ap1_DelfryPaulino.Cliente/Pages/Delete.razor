@@ -2,11 +2,11 @@
 @page "/Delete/{VehiculoId:int}"
 @inject HttpClient httpClient
 
-<PageTitle>Ver Vehiculo</PageTitle>
+<PageTitle>Ver Veh&iacute;culo</PageTitle>
 
 <div class="card shadow col-8">
     <div class="card-header bg-primary">
-        <h1 class="text-light">Ver Vehiculo</h1>
+        <h1 class="text-light">Ver Veh&iacute;culo</h1>
     </div>
     <div class="card-header">
         <h4 class="fw-bold">@mensaje</h4>
@@ -14,7 +14,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <p><strong> VehiculoID:</strong> @Vehiculo.VehiculoId</p>
+                <p><strong> Veh&iacute;culoID:</strong> @Vehiculo.VehiculoId</p>
                 <p><strong> Descripci&oacute;n:</strong> @Vehiculo.Descripción</p>
                 <p><strong> Fecha:</strong> @Vehiculo.Fecha.ToString("dd/MM/yyyy")</p>
                 <p><strong> Costo:</strong> @Vehiculo.Costo.ToString("N2")</p>
@@ -24,7 +24,7 @@
         <table class="table table-bordered text-center">
             <thead>
                 <tr>
-                    <th>VehiculoId</th>
+                    <th>Veh&iacute;culoId</th>
                     <th>Descripci&oacute;n</th>
                     <th>AccesorioId</th>
                     <th>Valor</th>

@@ -3,46 +3,42 @@
 
 @inject HttpClient httpClient
 
-<PageTitle>Registro</PageTitle>
+<PageTitle>Editar</PageTitle>
 
 <EditForm Model="vehiculo" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="card shadow col-8">
         <div class="card-header bg-primary">
-            <h1 class="text-light">Registro</h1>
+            <h1 class="text-light">Editar</h1>
         </div>
         <div class="card-body bg-light">
-
             <div class="row mt-2">
-                <div class="col-4">
+                <div class="col-3">
                     <label class="fw-bold bi bi-calendar-date"> Fecha</label>
                     <InputDate @bind-Value="vehiculo.Fecha" class="form-control"></InputDate>
                     <ValidationMessage For="@(() => vehiculo.Fecha)" />
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-3">
-                    <label class="fw-bold bi bi-person-badge-fill"> Descripci&oacute;n</label>
-                    <InputText @bind-Value="vehiculo.Descripción" class="form-control"></InputText>
-                    <ValidationMessage For="@(() => vehiculo.Descripción)" />
                 </div>
                 <div class="col-3">
                     <label class="fw-bold bi bi-pencil-square"> Costo:</label>
                     <InputNumber @bind-Value="vehiculo.Costo" class="form-control"></InputNumber>
                     <ValidationMessage For="@(() => vehiculo.Costo)" />
                 </div>
-
+                <div class="col-3 ">
+                    <label class="fw-bold bi bi-pencil-square">Gastos:</label>
+                    <label class="fw-bold form-control"> @vehiculo.Gastos.ToString("N2")</label>
+                </div>
             </div>
             <div class="row mt-2">
-                <div class="col-3">
-                    <label class="fw-bold bi bi-pencil-square">Gastos: @vehiculo.Gastos</label>
+                <div class="col-9">
+                    <label class="fw-bold bi bi-card-list"> Descripci&oacute;n</label>
+                    <InputTextArea @bind-Value="vehiculo.Descripción" class="form-control"></InputTextArea>
+                    <ValidationMessage For="@(() => vehiculo.Descripción)" />
                 </div>
             </div>
         </div>
-
         <div class="card">
             <div class="card-header bg-primary">
-                <h3 class="text-light">Detalle Ticket</h3>
+                <h3 class="text-light">Detalle Veh&iacute;culo</h3>
             </div>
             <div class="card-body row">
                 <div class="col col-3">
@@ -82,7 +78,7 @@
                         var nom = ListaAccesorios.FirstOrDefault(a => a.AccesorioId == detalle.AccesorioId);
                         <tr>
                             <td>@detalle.AccesorioId</td>
-                            <td>@detalle.Valor</td>
+                            <td>@detalle.Valor.ToString("N2")</td>
                             <td>@nom!.Descripción</td>
 
                             <td><button type="button" class="btn btn-danger bi bi-trash-fill" @onclick=@(() => Remove(detalle))></button></td>
@@ -96,7 +92,6 @@
             <div class="row">
                 <div class="input-group">
                     <a href="/Index" class="btn btn-primary bi bi-house-door-fill">Volver</a>
-                    <button type="button" class="btn btn-secondary bi bi-file-earmark-diff-fill" @onclick="Nuevo" @oninput="MensajeGuardar">Nuevo</button>
                     <button type="submit" class="btn btn-success bi bi-floppy-fill">Guardar</button>
                 </div>
                 <div class="col col-3">
@@ -117,17 +112,17 @@
 
 @code {
 
+    [Parameter]
+    public int VehiculoId { get; set; }
     public Vehiculos vehiculo = new Vehiculos();
     public List<Accesorios> ListaAccesorios { get; set; } = new List<Accesorios>();
-
     public VehiculosDetalle Detalle { get; set; } = new VehiculosDetalle();
 
     public string? mensaje { get; set; }
     public int resultado { get; set; }
     public int Opcion { get; set; }
 
-    [Parameter]
-    public int VehiculoId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         if (VehiculoId > 0)
@@ -194,13 +189,6 @@
     {
         resultado = 0;
         mensaje = string.Empty;
-    }
-
-    public void Nuevo()
-    {
-        vehiculo = new Vehiculos();
-        MensajeGuardar();
-        vehiculo.Fecha = DateTime.Today;
     }
 
     public bool Validar()
