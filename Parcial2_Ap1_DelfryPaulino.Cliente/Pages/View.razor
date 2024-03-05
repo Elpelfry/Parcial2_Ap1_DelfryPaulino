@@ -1,6 +1,70 @@
 ﻿@page "/View"
-<h1>View</h1>
-<a href="/Index" class="btn btn-primary bi bi-house-door">Volver</a>
+@page "/View/{VehiculoId:int}"
+@inject HttpClient httpClient
+
+<PageTitle>Ver Vehiculo</PageTitle>
+
+<div class="card shadow col-8">
+    <div class="card-header bg-primary">
+        <h1 class="text-light">Ver Vehiculo</h1>
+    </div>
+    <div class="card-header">
+        <h4 class="fw-bold">Detalles...</h4>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <p><strong> VehiculoID:</strong> @Vehiculo.VehiculoId</p>
+                <p><strong> Descripci&oacute;n:</strong> @Vehiculo.Descripción</p>
+                <p><strong> Fecha:</strong> @Vehiculo.Fecha.ToString("dd/MM/yyyy")</p>
+                <p><strong> Costo:</strong> @Vehiculo.Costo.ToString("N2")</p>
+                <p><strong> Gastos:</strong> @Vehiculo.Gastos.ToString("N2")</p>
+            </div>
+        </div>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>VehiculoId</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>AccesorioId</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in Vehiculo.VehiculosDetalle)
+                {
+                    var accesorio = Accesorios.FirstOrDefault(a => a.AccesorioId == detalle.AccesorioId);
+                    <tr>
+                        <td>@detalle.VehiculoId</td>
+                        <td>@accesorio!.Descripción</td>
+                        <td>@detalle.AccesorioId</td>
+                        <td>@detalle.Valor.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer d-flex justify-content-end input-group">
+        <a href="/Index" class="btn btn-primary bi bi-house-door-fill ms-auto">Volver</a>
+    </div>
+</div>
+
 @code {
 
+    [Parameter]
+    public int VehiculoId { get; set; }
+    public Vehiculos Vehiculo { get; set; } = new Vehiculos();
+    public List<Accesorios> Accesorios { get; set; } = new List<Accesorios>();
+    protected override async Task OnInitializedAsync()
+    {
+        if (VehiculoId > 0)
+        {
+            var VehiculosEncontrado = await httpClient.GetFromJsonAsync<Vehiculos>($"api/Vehiculos/{VehiculoId}");
+            if (VehiculosEncontrado != null)
+            {
+                Vehiculo = VehiculosEncontrado;
+                Accesorios = (await httpClient.GetFromJsonAsync<List<Accesorios>>("api/Accesorios"))!;
+            }
+        }
+    }
 }

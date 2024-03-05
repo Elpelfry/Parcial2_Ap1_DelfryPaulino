@@ -1,6 +1,91 @@
 ﻿@page "/Create"
-<h1>Create</h1>
-<a href="/Index" class="btn btn-primary bi bi-house-door">Volver</a>
+
+@inject HttpClient httpClient
+
+<PageTitle>Registro</PageTitle>
+
+
+
 @code {
 
+    public Vehiculos vehiculo = new Vehiculos();
+    public List<Accesorios> ListaAccesorios { get; set; } = new List<Accesorios>();
+    
+    public VehiculosDetalle Detalle { get; set; } = new VehiculosDetalle();
+
+    public string? mensaje { get; set; }
+    public int resultado { get; set; }
+    public int Opcion { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaAccesorios = (await httpClient.GetFromJsonAsync<List<Accesorios>>("api/Accesorios"))!;
+        vehiculo.Fecha = DateTime.Today;
+        Nuevo();
+    }
+
+
+    public async Task Guardar()
+    {
+        var guardadoVehi= await httpClient.PostAsJsonAsync("Tickets",vehiculo);
+
+        if (guardadoVehi.IsSuccessStatusCode)
+        {
+            resultado = 1;
+            mensaje = "Registro Guardado";
+           vehiculo = new Vehiculos();
+           vehiculo.Fecha = DateTime.Today;
+        }
+        else
+        {
+            resultado = 2;
+            mensaje = "Registro No Guardado";
+        }
+    }
+
+    public void Agregar()
+    {
+        if (Detalle.Valor==0 && Detalle.AccesorioId == 0 && Detalle.VehiculoId == 0)
+        {
+            if (Validar())
+            {
+                resultado = 3;
+                mensaje = "Existe";
+            }
+            else
+            {
+                resultado = 0;
+                mensaje = "";
+                vehiculo.VehiculosDetalle.Add(Detalle);
+                Detalle = new VehiculosDetalle();
+            }
+        }
+        else
+        {
+            resultado = 3;
+            mensaje = "LLena todos los campos";
+        }
+    }
+
+    public void Remove(VehiculosDetalle details)
+    {
+        Detalle = details;
+        vehiculo.VehiculosDetalle.Remove(Detalle);
+    }
+
+    public void MensajeGuardar()
+    {
+        resultado = 0;
+        mensaje = string.Empty;
+    }
+
+    public void Nuevo()
+    {
+       
+    }
+
+    public bool Validar()
+    {
+       
+    }
 }
